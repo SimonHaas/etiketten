@@ -112,7 +112,6 @@
             data-size="200"
             type="button"
             class="btn btn-info btn-lg btn-block btn-etikett"
-            disabled
           >
             Bierschinken 200g
           </button>
@@ -121,7 +120,6 @@
             data-size="200"
             type="button"
             class="btn btn-info btn-lg btn-block btn-etikett"
-            disabled
           >
             Bratwurstbrät 200g
           </button>
@@ -130,7 +128,6 @@
             data-size="200"
             type="button"
             class="btn btn-info btn-lg btn-block btn-etikett"
-            disabled
           >
             Göttinger 200g
           </button>
@@ -139,7 +136,6 @@
             data-size="200"
             type="button"
             class="btn btn-info btn-lg btn-block btn-etikett"
-            disabled
           >
             Grobe Bauernwurst 200g
           </button>
@@ -148,7 +144,6 @@
             data-size="200"
             type="button"
             class="btn btn-info btn-lg btn-block btn-etikett"
-            disabled
           >
             Jagdwurst 200g
           </button>
@@ -157,7 +152,6 @@
             data-size="300"
             type="button"
             class="btn btn-info btn-lg btn-block btn-etikett"
-            disabled
           >
             Leberkäse 200g
           </button>
@@ -166,7 +160,6 @@
             data-size="200"
             type="button"
             class="btn btn-info btn-lg btn-block btn-etikett"
-            disabled
           >
             Roter Preßsack 200g
           </button>
@@ -175,7 +168,6 @@
             data-size="200"
             type="button"
             class="btn btn-info btn-lg btn-block btn-etikett"
-            disabled
           >
             Schinkenwurst 200g
           </button>
@@ -184,7 +176,6 @@
             data-size="200"
             type="button"
             class="btn btn-info btn-lg btn-block btn-etikett"
-            disabled
           >
             Schweinefleisch 200g
           </button>
@@ -193,7 +184,6 @@
             data-size="200"
             type="button"
             class="btn btn-info btn-lg btn-block btn-etikett"
-            disabled
           >
             Weißer Preßsack 200g
           </button>
@@ -202,7 +192,6 @@
             data-size="200"
             type="button"
             class="btn btn-info btn-lg btn-block btn-etikett"
-            disabled
           >
             Leberwurst 200g
           </button>
@@ -211,7 +200,6 @@
             data-size="250"
             type="button"
             class="btn btn-info btn-lg btn-block btn-etikett"
-            disabled
           >
             Griebenschmalz
           </button>
@@ -220,7 +208,6 @@
             data-size="200"
             type="button"
             class="btn btn-info btn-lg btn-block btn-etikett"
-            disabled
           >
             Zwiebelmettwurst 200g
           </button>
@@ -262,7 +249,61 @@
 
       function generateSmallPdf(kind, size) {
         let doc = new jsPDF("l", "mm", "a4");
-        doc.text("TODO", 10, 10);
+
+        let width = 90;
+        let height = 17;
+        let xFirst = 52;
+        let yFirst = 24;
+        let deltaX = 130;
+        let deltaY = 30;
+
+        let kindObject = content[kind];
+        let fontName = "times";
+
+        for (let i = 0; i < 6; i++) {
+          for (let j = 0; j < 2; j++) {
+            let currentX = xFirst + deltaX * j;
+            let currentY = yFirst + deltaY * i;
+            
+            //doc.rect(currentX, currentY, width, height);
+
+            doc.setFont(fontName);
+            doc.setFontSize(12);
+            doc.text(kindObject["prefix"], currentX, currentY + 4);
+
+            doc.setFont(fontName);
+            doc.setFontStyle("bold");
+            doc.text(kindObject["name"], currentX + 27, currentY + 4);
+
+            doc.setFont(fontName);
+            doc.setFontStyle("normal");
+            doc.setFontSize(10);
+            doc.text("Füllgewicht", currentX, currentY + 8);
+
+            doc.setFont(fontName);
+            doc.setFontStyle("bold");
+            doc.text(size + "g", currentX + 18, currentY + 8);
+
+            doc.setFont(fontName);
+            doc.setFontStyle("normal");
+            doc.text("- EIGENE HERSTELLUNG", currentX + 26, currentY + 8);
+
+            doc.setFontSize(6);
+            doc.setFontStyle("normal");
+            doc.text("Zutaten: " + kindObject["ingredients"], currentX, currentY + 11, {
+              maxWidth: width,
+              lineHeightFactor: 1,
+            });
+
+            doc.text(
+              "Bei Lagerung unter +8°C mindestens haltbar bis: " +
+                calculateDate(kindObject["good_for"]),
+              currentX + 20,
+              currentY + height - 1,
+              {}
+            );
+          }
+        }
 
         return doc;
       }
@@ -358,7 +399,7 @@
           good_for: 7,
         },
         bratwurst: {
-          prefix: "Hausgemachte",
+          prefix: "Hausgemachtes",
           ingredients:
             "80% Schweinefleisch, Trinkwasser, Kochsalz, Gewürze (u.a. SELLERIE), Geschmacksverstärker: Natriumglutamat, Stabilisator: Phosphat",
           name: "Bratwurstbrät",
