@@ -288,16 +288,16 @@
             //doc.rect(currentX, currentY, width, height);
 
             doc.setFont(fontName);
-            doc.setFontSize(10);
+            doc.setFontSize(14);
             doc.text(kindObject["prefix"], currentX, currentY + 5);
 
             doc.setFont(fontName);
             doc.setFontStyle("bold");
-            doc.setFontSize(12);
-            doc.text(kindObject["name"], currentX + 23, currentY + 5);
+            doc.text(kindObject["name"], currentX + 32, currentY + 5);
 
             doc.setFont(fontName);
             doc.setFontStyle("normal");
+            doc.setFontSize(12);
             doc.text("Füllgewicht", currentX, currentY + 10);
 
             doc.setFont(fontName);
