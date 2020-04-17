@@ -149,7 +149,7 @@
           </button>
           <button
             data-kind="leberkaese"
-            data-size="300"
+            data-size="200"
             type="button"
             class="btn btn-info btn-lg btn-block btn-etikett"
           >
@@ -295,11 +295,12 @@
               lineHeightFactor: 1,
             });
 
+            doc.setFontSize(5);
             doc.text(
               "Bei Lagerung unter +8°C mindestens haltbar bis: " +
                 calculateDate(kindObject["good_for"]),
               currentX + 20,
-              currentY + height - 1,
+              currentY + height,
               {}
             );
           }
