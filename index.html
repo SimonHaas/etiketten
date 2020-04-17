@@ -46,7 +46,7 @@
             type="button"
             class="btn btn-info btn-lg btn-block btn-etikett"
           >
-            Grobebauernwurst 300g
+            Grobe Bauernwurst 300g
           </button>
           <button
             data-kind="jagdwurst"
@@ -141,7 +141,7 @@
             class="btn btn-info btn-lg btn-block btn-etikett"
             disabled
           >
-            Grobebauernwurst 200g
+            Grobe Bauernwurst 200g
           </button>
           <button
             data-kind="jagdwurst"
@@ -285,15 +285,15 @@
             let currentX = xFirst + deltaX * j;
             let currentY = yFirst + deltaY * i;
             
-            //doc.rect(currentX, currentY, width, height);
+            doc.rect(currentX, currentY, width, height);
 
             doc.setFont(fontName);
-            doc.setFontSize(14);
+            doc.setFontSize(17);
             doc.text(kindObject["prefix"], currentX, currentY + 5);
 
             doc.setFont(fontName);
             doc.setFontStyle("bold");
-            doc.text(kindObject["name"], currentX + 32, currentY + 5);
+            doc.text(kindObject["name"], currentX + 38, currentY + 5);
 
             doc.setFont(fontName);
             doc.setFontStyle("normal");
