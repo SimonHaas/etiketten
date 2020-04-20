@@ -265,7 +265,7 @@
             let currentX = xFirst + deltaX * j;
             let currentY = yFirst + deltaY * i;
             
-            //doc.rect(currentX, currentY, width, height);
+            doc.rect(currentX, currentY, width, height);
 
             doc.setFont(fontName);
             doc.setFontSize(12);
@@ -299,8 +299,8 @@
             doc.text(
               "Bei Lagerung unter +8°C mindestens haltbar bis: " +
                 calculateDate(kindObject["good_for"]),
-              currentX + 20,
-              currentY + height,
+              currentX + 45,
+              currentY + height - 1,
               {}
             );
           }
