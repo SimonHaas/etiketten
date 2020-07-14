@@ -238,13 +238,8 @@
           doc = generateLargePdf(kind, size);
         }
 
-        let uristring = doc.output("datauristring");
-        let embed =
-          "<embed width='100%' height='100%' src='" + uristring + "'/>";
-        let x = window.open();
-        x.document.open();
-        x.document.write(embed);
-        x.document.close();
+        doc.autoPrint();
+        window.open(doc.output('bloburl'), '_blank');
       }
 
       function generateSmallPdf(kind, size) {
