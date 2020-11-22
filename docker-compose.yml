@@ -6,7 +6,6 @@ services:
             context: .
             dockerfile: ./Dockerfile
         container_name: etiketten_nginx
-        image: nginx
         restart: always
         ports:
             - 8084:80
