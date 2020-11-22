@@ -1,22 +1,15 @@
 version: "3.6"
 services:
     etiketten:
+        image: registry.simon-haas.eu/etiketten
+        build:
+            context: .
+            dockerfile: ./Dockerfile
         container_name: etiketten_nginx
         image: nginx
         restart: always
-        networks:
-            - traefik_proxy
+        ports:
+            - 8084:80
         volumes:
             - ./:/usr/share/nginx/html
-        labels:
-            - "traefik.backend=etiketten"
-            - "traefik.frontend.rule=Host:etiketten.simon-haas.eu"
-            - "traefik.enable=true"
-            - "traefik.port=80"
-
-networks:
-    traefik_proxy:
-        external:
-            name: traefik_proxy
-    default:
-        driver: bridge
+            
