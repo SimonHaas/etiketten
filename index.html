@@ -9,7 +9,7 @@
       integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
       crossorigin="anonymous"
     />
-    <link rel="manifest" href="/manifest.json">
+    <link rel="manifest" href="/manifest.json" />
   </head>
   <body>
     <div class="container">
@@ -212,6 +212,14 @@
           >
             Zwiebelmettwurst 200g
           </button>
+          <button
+            data-kind="zwetschgenbaames"
+            data-size="200"
+            type="button"
+            class="btn btn-info btn-lg btn-block btn-etikett"
+          >
+            Zwetschgenbaames
+          </button>
         </div>
       </div>
     </div>
@@ -234,17 +242,57 @@
       });
 
       function generatePDF(kind, size) {
-        //TODO Schinken, ganz anderes Design
-
-        // Bei Griebenschmalz ist size = 250, es sollen aber kleine Etiketten sein.
-        if (size < 300) {
+        if (kind == "zwetschgenbaames") {
+          doc = generateZwetschgenbaamesPdf();
+        } else if (size < 300) {
+          // Bei Griebenschmalz ist size = 250, es sollen aber kleine Etiketten sein.
           doc = generateSmallPdf(kind, size);
         } else {
           doc = generateLargePdf(kind, size);
         }
 
         doc.autoPrint();
-        window.open(doc.output('bloburl'), '_blank');
+        window.open(doc.output("bloburl"), "_blank");
+      }
+
+      function generateZwetschgenbaamesPdf() {
+        let doc = new jsPDF("l", "mm", "a4");
+
+        let width = 90;
+        let height = 17;
+        let xFirst = 52;
+        let yFirst = 24;
+        let deltaX = 130;
+        let deltaY = 30;
+
+        let kindObject = content["zwetschgenbaames"];
+        let fontName = "times";
+
+        for (let i = 0; i < 6; i++) {
+          for (let j = 0; j < 2; j++) {
+            let currentX = xFirst + deltaX * j;
+            let currentY = yFirst + deltaY * i;
+
+            doc.setFont(fontName);
+            doc.setFontStyle("bold");
+            doc.setFontSize(16);
+            doc.text(kindObject["name"], currentX + 25, currentY + 6);
+
+            doc.setFontSize(6);
+            doc.setFontStyle("normal");
+            doc.text(
+              "Zutaten: " + kindObject["ingredients"],
+              currentX + 25,
+              currentY + 11,
+              {
+                maxWidth: width,
+                lineHeightFactor: 1,
+              }
+            );
+          }
+        }
+
+        return doc;
       }
 
       function generateSmallPdf(kind, size) {
@@ -264,7 +312,7 @@
           for (let j = 0; j < 2; j++) {
             let currentX = xFirst + deltaX * j;
             let currentY = yFirst + deltaY * i;
-            
+
             //doc.rect(currentX, currentY, width, height);
 
             doc.setFont(fontName);
@@ -290,10 +338,15 @@
 
             doc.setFontSize(6);
             doc.setFontStyle("normal");
-            doc.text("Zutaten: " + kindObject["ingredients"], currentX, currentY + 11, {
-              maxWidth: width,
-              lineHeightFactor: 1,
-            });
+            doc.text(
+              "Zutaten: " + kindObject["ingredients"],
+              currentX,
+              currentY + 11,
+              {
+                maxWidth: width,
+                lineHeightFactor: 1,
+              }
+            );
 
             doc.setFontSize(5);
             doc.text(
@@ -326,7 +379,7 @@
           for (let j = 0; j < 2; j++) {
             let currentX = xFirst + deltaX * j;
             let currentY = yFirst + deltaY * i;
-            
+
             //doc.rect(currentX, currentY, width, height);
 
             doc.setFont(fontName);
@@ -352,10 +405,15 @@
 
             doc.setFontSize(8);
             doc.setFontStyle("normal");
-            doc.text("Zutaten: " + kindObject["ingredients"], currentX, currentY + 15, {
-              maxWidth: width,
-              lineHeightFactor: 1,
-            });
+            doc.text(
+              "Zutaten: " + kindObject["ingredients"],
+              currentX,
+              currentY + 15,
+              {
+                maxWidth: width,
+                lineHeightFactor: 1,
+              }
+            );
 
             doc.text(
               "Bei Lagerung unter +8°C mindestens haltbar bis: " +
@@ -371,18 +429,18 @@
       }
 
       function calculateDate(goodFor) {
-          let date = new Date();
-          date.setDate(date.getDate() + goodFor * 30);
+        let date = new Date();
+        date.setDate(date.getDate() + goodFor * 30);
 
-          let dateString =
-            date.getDate() +
-            "." +
-            (date.getMonth() + 1) +
-            "." +
-            date.getFullYear();
+        let dateString =
+          date.getDate() +
+          "." +
+          (date.getMonth() + 1) +
+          "." +
+          date.getFullYear();
 
-          return dateString;
-        }
+        return dateString;
+      }
 
       let content = {
         leberwurst: {
@@ -482,6 +540,12 @@
             "Schweinefleisch, Räucherkamm, Zwiebeln, Paprika, Schaschliksoße enthält SENF, Gewürze",
           name: "Schaschliktopf",
           good_for: 5,
+        },
+        zwetschgenbaames: {
+          prefix: "",
+          ingredients: "Rindfleisch, Salz, Gewürze, Rauch",
+          name: "Zwetschgenbaames",
+          good_for: 0,
         },
       };
     </script>

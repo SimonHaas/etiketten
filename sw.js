@@ -1,4 +1,4 @@
-const staticCacheName = 'site-static-v1';
+const staticCacheName = 'site-static-v2';
 const assets = [
     '/',
     '/index.html',
@@ -8,6 +8,7 @@ const assets = [
 ]
 
 self.addEventListener('install', event => {
+    self.skipWaiting(); // bad practice, but works for me
     event.waitUntil(
         caches.open(staticCacheName).then(cache => {
             cache.addAll(assets);
