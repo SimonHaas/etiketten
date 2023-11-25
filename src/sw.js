@@ -1,11 +1,13 @@
-const staticCacheName = 'site-static-v2';
+const staticCacheName = 'site-static-v3';
 const assets = [
     '/',
     '/index.html',
-    'https://code.jquery.com/jquery-3.5.0.min.js',
-    'https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js',
-    'https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css'
+    '/thirdparty/jquery.min.js',
+    '/thirdparty/jspdf.min.js',
+    '/thirdparty/bootstrap.min.css'
 ]
+
+//TODO caching so, dass trotzdem nach neuen Versionen geschaut wird
 
 self.addEventListener('install', event => {
     self.skipWaiting(); // bad practice, but works for me
