@@ -220,6 +220,14 @@
           >
             Zwetschgenbaames
           </button>
+          <button
+            data-kind="landschinken"
+            data-size="200"
+            type="button"
+            class="btn btn-info btn-lg btn-block btn-etikett"
+          >
+            Landschinken
+        </button>
         </div>
       </div>
     </div>
@@ -230,9 +238,9 @@
     ></script>
     <script>
       $(document).ready(function () {
-        if ('serviceWorker' in navigator) {
-          navigator.serviceWorker.register('/sw.js');
-        }
+        // if ('serviceWorker' in navigator) {
+        //   navigator.serviceWorker.register('/sw.js');
+        // }
 
         $(".btn-etikett").on("click", (event) => {
           let kind = $(event.target).data("kind");
@@ -244,6 +252,9 @@
       function generatePDF(kind, size) {
         if (kind == "zwetschgenbaames") {
           doc = generateZwetschgenbaamesPdf();
+        }
+        else if (kind == "landschinken") {
+          doc = generateLandschinkenPdf();
         } else if (size < 300) {
           // Bei Griebenschmalz ist size = 250, es sollen aber kleine Etiketten sein.
           doc = generateSmallPdf(kind, size);
@@ -253,6 +264,58 @@
 
         doc.autoPrint();
         window.open(doc.output("bloburl"), "_blank");
+      }
+
+      function generateLandschinkenPdf() {
+        let doc = new jsPDF("l", "mm", "a4");
+
+        let width = 90;
+        let height = 17;
+        let xFirst = 52;
+        let yFirst = 24;
+        let deltaX = 130;
+        let deltaY = 30;
+
+        let kindObject = content["landschinken"];
+        let fontName = "times";
+
+        for (let i = 0; i < 6; i++) {
+          for (let j = 0; j < 2; j++) {
+            let currentX = xFirst + deltaX * j;
+            let currentY = yFirst + deltaY * i;
+            //doc.rect(currentX, currentY, width, height);
+
+            let yOffset = currentY + 6;
+            doc.setFont(fontName);
+            doc.setFontSize(16);
+            doc.text(kindObject["prefix"], currentX + 5, yOffset);
+            doc.setFontStyle("bold");
+            doc.text(kindObject["name"], currentX + 33, yOffset);
+
+            doc.setFontSize(6);
+            doc.setFontStyle("normal");
+            doc.text(
+              "Zutaten: " + kindObject["ingredients"],
+              currentX,
+              currentY + 11,
+              {
+                maxWidth: width,
+                lineHeightFactor: 1,
+              }
+            );
+
+            doc.setFontSize(5);
+            doc.text(
+              "Bei Lagerung unter +8°C mindestens haltbar bis: " +
+                calculateDate(kindObject["good_for"]),
+              currentX + 45,
+              currentY + height - 1,
+              {}
+            );
+          }
+        }
+
+        return doc;
       }
 
       function generateZwetschgenbaamesPdf() {
@@ -546,6 +609,12 @@
           ingredients: "Rindfleisch, Salz, Gewürze, Rauch",
           name: "Zwetschgenbaames",
           good_for: 0,
+        },
+        landschinken: {
+          prefix: "Fränkischer",
+          ingredients: "Schweineschinken, Nitritpökelsalz (Kochsalz, Konservierungsstoff E250), Gewürze (u.a. SELLERIE), Rauch",
+          name: "Landschinken",
+          good_for: 1.5,
         },
       };
     </script>
